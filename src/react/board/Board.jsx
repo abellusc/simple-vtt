@@ -12,7 +12,7 @@ class Board extends React.Component {
     renderGrid(canvas) {
         const ctx = canvas.getContext('2d');
 
-        console.log(ctx);
+        // console.log(ctx);
         for (let ox = 0; ox < (this.props.canvasWidth / this.props.gridSquareWidth); ox += 1) {
             for (let oy = 0; oy < (this.props.canvasHeight / this.props.gridSquareHeight); oy += 1) {
                 ctx.strokeStyle = 'black';

@@ -1,4 +1,4 @@
 import { action } from "./base";
 
-export const setToolById = (toolId) => action('tools', 'SET_TOOL', 'client', { toolId });
-export const setToolOptionsById = (toolId, options) => action('tools', 'SET_TOOL_OPTIONS', 'client', { toolId, options });
+export const setToolById = (toolId) => action('SET_TOOL', 'tools', 'client', { toolId });
+export const setToolOptionsById = (toolId, options) => action('SET_TOOL_OPTIONS', 'tools', 'client', { toolId, options });

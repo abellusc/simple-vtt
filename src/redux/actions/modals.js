@@ -1,4 +1,4 @@
 import { action } from "./base";
 
-export const showModal = (modalName, options) => action('modals', 'SHOW_MODAL', 'client', { modalName, options });
-export const hideModal = (modalName) => action('modals', 'HIDE_MODAL', 'client', { modalName });
+export const showModal = (modalName, options) => action('SHOW_MODAL', 'modals', 'client', { modalName, options });
+export const hideModal = (modalName) => action('HIDE_MODAL', 'modals', 'client', { modalName });

@@ -7,13 +7,10 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   NavbarText
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import { showModal } from '../../../redux/actions/modals';
 
 const Navigation = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,10 +28,10 @@ const Navigation = (props) => {
               <NavLink target="_new" rel="noopener noreferrer" href="https://github.com/abellusc">open source on github</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">host a session</NavLink>
+              <NavLink onClick={() => props.dispatch(showModal('invite', {}))}>host a session</NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>simple virtual tabletop v1.0.0</NavbarText>
+          <NavbarText>rfi version 1.0</NavbarText>
         </Collapse>
       </Navbar>
     </div>

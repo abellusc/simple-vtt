@@ -38,13 +38,19 @@ function toolsReducer(toolsState, action) {
         ...toolsState,
     };
 
-    switch(action.action) {
+    console.log('FIRING ACTION ON TOOLS REDUCER', action);
+
+    switch(action.type) {
         case 'SET_TOOL':
             newToolsState = { ...newToolsState, currentTool: action.payload.toolId };
             break;
         case 'SET_TOOL_OPTIONS':
             break;
+        default:
+            break;
     }
+
+    console.log('new tools state', newToolsState);
 
     return newToolsState;
 }
@@ -53,27 +59,28 @@ function modalReducer(modalState, action) {
         ...modalState,
     };
 
-    switch(action.action) {
+    console.log('FIRING ACTION ON MODAL REDUCER', action);
+
+    switch(action.type) {
         case 'SHOW_MODAL':
-            newModalState = {
-                ...newModalState,
-                [action.payload.modalName]: {
-                    display: true,
-                    options: action.payload.options,
-                }
-            };
+            newModalState[action.payload.modalName] = {
+                display: true,
+                options: action.payload.options,
+            }
+            console.log('set', action.payload.modalName, 'to showing');
         break;
         case 'HIDE_MODAL':
-            newModalState = {
-                ...newModalState,
-                [action.payload.modalName]: {
-                    display: false,
-                    options: action.payload.options,
-                }
-            };
+            newModalState[action.payload.modalName] = {
+                display: false,
+                options: action.payload.options,
+            }
+            console.log('set', action.payload.modalName, 'to hidden');
         break;
+        default:
+            break;
     }
 
+    console.log('new modal state', newModalState);
     return newModalState;
 };
 function rootReducer(state = initialState, action) {
@@ -81,19 +88,25 @@ function rootReducer(state = initialState, action) {
         ...state
     };
 
+    console.log('REDUCING STATE', action.reducer);
+
     // reducer context handler
-    switch (action.type) {
-        case 'tools': newState = { ...newState, ...(toolsReducer(state.tools, action)) }; break; // manages toolbar
+    switch (action.reducer) {
+        case 'tools': newState = { ...newState, tools: toolsReducer(state.tools, action) }; break; // manages toolbar
         case 'account': break; // manages account stuff like logging in
         case 'gamemaster': break; // manages gamemaster special tools (advanced tools)
         case 'invite': break; // manages creation and accepting of invites and tripcodes
         case 'canvas': break; // manages drawing on the canvas
-        case 'modal': newState = { ...newState, ...(modalReducer(state.modals, action)) }; break; // manages showing and hiding of modals
+        case 'modals': newState = { ...newState, modals: modalReducer(state.modals, action) }; break; // manages showing and hiding of modals
         case 'toast': break; // manages showing and hiding of toasts
         case 'chat': break; // manages account stuff like logging in
         case 'roll': break; // manages rolling of dice on the secure rolling server
+        default: break;
     }
-    return state;
+
+    console.warn('Final State', newState);
+
+    return newState;
 };
 
 export default rootReducer;
