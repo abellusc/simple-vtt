@@ -1,0 +1,1 @@
+export const action = (type, actionName, source, payload) => ({ action: actionName, source, payload });
