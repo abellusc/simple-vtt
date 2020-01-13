@@ -24,26 +24,15 @@ const GamemasterModal = (props) => {
 
   return (
     <div>
-      <Form inline onSubmit={(e) => e.preventDefault()}>
-        <FormGroup>
-          <Label for="backdrop">Backdrop value</Label>{' '}
-          <Input type="select" name="backdrop" id="backdrop" onChange={changeBackdrop}>
-            <option value="true">true</option>
-            <option value="false">false</option>
-            <option value="static">"static"</option>
-          </Input>
-        </FormGroup>
-        {' '}
-        <Button color="danger" onClick={toggle}>{buttonLabel}</Button>
-      </Form>
-      <Modal isOpen={modal} toggle={toggle} className={className} backdrop="static">
-        <ModalHeader toggle={toggle}>sign in or sign up</ModalHeader>
+      <Modal isOpen={props.options.display} toggle={toggle} className={className} backdrop="static">
+        <ModalHeader toggle={toggle}>gamemaster tools</ModalHeader>
         <ModalBody>
-          <Alert color="danger">to access this content, you must be a registered member. you don't have to sign up, but you also won't be able to access this without signing up... so there's that...</Alert>
+            <Alert color="warning">
+                You do not have permission to access to this feature.
+            </Alert>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>Login</Button>{' '}
-          <Button color="secondary" onClick={toggle}>Signup</Button>
+          <Button color="secondary" onClick={() => props.hideModal('gm')}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </div>

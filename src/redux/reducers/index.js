@@ -21,20 +21,14 @@ const initialState = {
     modals: {
         login: {
             display: false,
-            required: false,
-            title: 'sign in or sign up!',
             options: {}
         },
         invite: {
             display: false,
-            required: false,
-            title: 'send or accept invite',
             options: {}
         },
         gm: {
             display: false,
-            required: false,
-            title: '<gm> gamemaster tools',
             options: {}
         },
     }
@@ -54,6 +48,34 @@ function toolsReducer(toolsState, action) {
 
     return newToolsState;
 }
+function modalReducer(modalState, action) {
+    let newModalState = {
+        ...modalState,
+    };
+
+    switch(action.action) {
+        case 'SHOW_MODAL':
+            newModalState = {
+                ...newModalState,
+                [action.payload.modalName]: {
+                    display: true,
+                    options: action.payload.options,
+                }
+            };
+        break;
+        case 'HIDE_MODAL':
+            newModalState = {
+                ...newModalState,
+                [action.payload.modalName]: {
+                    display: false,
+                    options: action.payload.options,
+                }
+            };
+        break;
+    }
+
+    return newModalState;
+};
 function rootReducer(state = initialState, action) {
     let newState = {
         ...state
@@ -66,7 +88,7 @@ function rootReducer(state = initialState, action) {
         case 'gamemaster': break; // manages gamemaster special tools (advanced tools)
         case 'invite': break; // manages creation and accepting of invites and tripcodes
         case 'canvas': break; // manages drawing on the canvas
-        case 'modal': break; // manages showing and hiding of modals
+        case 'modal': newState = { ...newState, ...(modalReducer(state.modals, action)) }; break; // manages showing and hiding of modals
         case 'toast': break; // manages showing and hiding of toasts
         case 'chat': break; // manages account stuff like logging in
         case 'roll': break; // manages rolling of dice on the secure rolling server

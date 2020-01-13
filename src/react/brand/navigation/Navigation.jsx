@@ -23,7 +23,7 @@ const Navigation = (props) => {
   return (
     <div>
       <Navbar style={{ backgroundColor: "pink", width: "100%", position:"fixed", boxShadow: "1px 1px 1px 1px rgba(0,0,0,0.4)" }} color="light" light expand="md">
-        <NavbarBrand href="/">roll for initiative</NavbarBrand>
+        <NavbarBrand href="/">rfi by alexandra</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
