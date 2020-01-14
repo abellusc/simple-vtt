@@ -23,6 +23,10 @@ const initialState = {
             display: false,
             options: {}
         },
+        signup: {
+            display: false,
+            options: {}
+        },
         invite: {
             display: false,
             options: {}
@@ -31,6 +35,14 @@ const initialState = {
             display: false,
             options: {}
         },
+        joinSession: {
+            display: false,
+            options: {}
+        },
+        createSession: {
+            display: false,
+            options: {}
+        }
     }
 };
 function toolsReducer(toolsState, action) {
@@ -63,6 +75,14 @@ function modalReducer(modalState, action) {
 
     switch(action.type) {
         case 'SHOW_MODAL':
+            // set all to not showing
+            Object.keys(newModalState).forEach((modalName) => {
+                if (newModalState[modalName].display) {
+                    console.log('overriding modal:', modalName);
+                    newModalState[modalName].display = false;
+                }
+            });
+
             newModalState[action.payload.modalName] = {
                 display: true,
                 options: action.payload.options,

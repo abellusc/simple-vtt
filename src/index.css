@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.cardButton > div {
+  animation: 2s ease-in-out;
+}
+
+.cardButton > div:hover {
+  background-color: #dfdfdf;
+}

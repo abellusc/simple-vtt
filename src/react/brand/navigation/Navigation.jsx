@@ -10,7 +10,7 @@ import {
   NavbarText
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { showModal } from '../../../redux/actions/modals';
+// import { showModal } from '../../../redux/actions/modals';
 
 const Navigation = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,9 +26,6 @@ const Navigation = (props) => {
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink target="_new" rel="noopener noreferrer" href="https://github.com/abellusc">open source on github</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink onClick={() => props.dispatch(showModal('invite', {}))}>host a session</NavLink>
             </NavItem>
           </Nav>
           <NavbarText>rfi version 1.0</NavbarText>
