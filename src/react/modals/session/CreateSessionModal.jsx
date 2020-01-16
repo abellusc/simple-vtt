@@ -5,48 +5,52 @@ import { Modal, ModalHeader, ModalBody, Input, Button, InputGroup, InputGroupAdd
 import { connect } from 'react-redux';
 import { showModal } from '../../../redux/actions/modals';
 
-const JoinSessionModal = (props) => {
-  const {
-    className
-  } = props;
-  const [modal, setModal] = useState(false);
+class CreateSessionModal extends React.Component {
+  componentWillReceiveProps() {
+    console.log('Protected modal mounted, checking permissions...');
 
-  const toggle = () => setModal(!modal);
+    if (!this.props.loggedIn) {
+      this.props.dispatch(showModal('login'));
+    }
+  }
 
-  return (
-    <div>
-      <Modal isOpen={props.display} toggle={toggle} className={className} backdrop="static">
-        <ModalHeader toggle={() => props.dispatch(showModal('invite'))}>create a session</ModalHeader>
-        <ModalBody>
-            <h1>create a session</h1>
-            ready to play? fill out some basic information here...
-            <hr />
+  render(){
 
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>Session Name</InputGroupText>
-              </InputGroupAddon>
-              <Input placeholder="example: Tomb of Ul'goroth" />
-            </InputGroup>
+    return (
+      <div>
+        <Modal isOpen={this.props.display} backdrop="static">
+          <ModalHeader toggle={() => this.props.dispatch(showModal('invite'))}>create a session</ModalHeader>
+          <ModalBody>
+              <h1>create a session</h1>
+              ready to play? fill out some basic information here...
+              <hr />
 
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>Password</InputGroupText>
-              </InputGroupAddon>
-              <Input type="password" placeholder="12345678" />
-            </InputGroup>
- 
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>Session Name</InputGroupText>
+                </InputGroupAddon>
+                <Input placeholder="example: Tomb of Ul'goroth" />
+              </InputGroup>
+      <br />
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>Password</InputGroupText>
+                </InputGroupAddon>
+                <Input type="password" placeholder="12345678" />
+              </InputGroup>
+  
 
-            <hr />
+              <hr />
 
-            once you create your session, you will be able to edit these settings and more!
-
-            <Button color="primary" block>create session</Button>
-        </ModalBody>
-      </Modal>
-    </div>
-  );
-};
+              once you create your session, you will be able to edit these settings and more!
+              <br />
+              <Button color="primary" block>create session</Button>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  };
+}
 
 const mapStateToProps = state => {
     console.log('create session modal received props');
@@ -54,7 +58,8 @@ const mapStateToProps = state => {
     return {
         display: state.modals.createSession.display,
         options: state.modals.createSession.options,
+        loggedIn: !!state.account.user,
     };
 };
 
-export default connect(mapStateToProps)(JoinSessionModal);
+export default connect(mapStateToProps)(CreateSessionModal);

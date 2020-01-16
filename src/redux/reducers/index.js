@@ -1,7 +1,20 @@
 const initialState = {
+    config: {
+        apiUrl: 'http://localhost:8080', // rest api
+        wsUrl: 'http://localhost:8081', // websocket
+    },
     account: {
         loggedIn: false,
+        accountToken: null,
         user: null,
+        signup: {
+            username: null,
+            password: null,
+        },
+        login: {
+            username: null,
+            password: null,
+        }
     },
     brand: {
         brandName: 'roll for initiative',
@@ -17,7 +30,7 @@ const initialState = {
     session: {
         id: null,
         status: 'AWAITING_CODE',
-        playerKey: null,
+        sessionToken: null,
     },
     tools: {
         currentTool: -1,
@@ -148,6 +161,34 @@ function sessionsReducer(state, action) {
 
     return newState;
 }
+
+function accountReducer = (state, action) {
+    let newState = {
+        ...state,
+    };
+
+    switch (action.type) {
+        case 'SIGNUP_SET_USERNAME':
+            newState.account.signup.username = action.payload.username;
+            break;
+        case 'SIGNUP_SET_PASSWORD':
+            newState.account.signup.password = action.payload.password;
+            break;
+        case 'LOGIN_SET_USERNAME':
+            newState.account.login.username = action.payload.username;
+            break;
+        case 'LOGIN_SET_PASSWORD':
+            newState.account.login.password = action.payload.password;
+            break;
+        case 'CHECK_LOGIN':
+            break;
+        default:
+            break;
+    }
+
+    return newState;
+}
+
 function rootReducer(state = initialState, action) {
     let newState = {
         ...state

@@ -5,7 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'react
 import { connect } from 'react-redux';
 import { hideModal, showModal } from '../../../redux/actions/modals';
 
-const LoginModal = (props) => {
+const SignupModal = (props) => {
   const {
     className
   } = props;
@@ -30,13 +30,13 @@ const LoginModal = (props) => {
 }
 
 const mapStateToProps = state => {
-  console.log('login modal received props');
+  console.log('signup modal received props');
   console.log('state received', state);
   return {
-      display: state.modals.login.display,
-      options: state.modals.login.options,
+      display: state.modals.signup.display,
+      options: state.modals.signup.options,
       loggedIn: !!state.account.user,
   };
 };
 
-export default connect(mapStateToProps)(LoginModal);
+export default connect(mapStateToProps)(SignupModal);
