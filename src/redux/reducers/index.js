@@ -14,6 +14,11 @@ const initialState = {
         gridSquareWidth: 50, // width of a square in px
         gridSquareHeight: 50, // height of a square in px
     },
+    session: {
+        id: null,
+        status: 'AWAITING_CODE',
+        playerKey: null,
+    },
     tools: {
         currentTool: -1,
         options: []
@@ -42,6 +47,10 @@ const initialState = {
         createSession: {
             display: false,
             options: {}
+        },
+        connecting: {
+            display: false,
+            options: {}
         }
     }
 };
@@ -54,9 +63,11 @@ function toolsReducer(toolsState, action) {
 
     switch(action.type) {
         case 'SET_TOOL':
-            newToolsState = { ...newToolsState, currentTool: action.payload.toolId };
+            console.log('[Action Received]', 'Set tool.');
+            newToolsState.tools.currentTool = action.payload.toolId;
             break;
         case 'SET_TOOL_OPTIONS':
+            console.log('[Action Received]', 'Set tool options for tool.');
             break;
         default:
             break;
@@ -76,21 +87,21 @@ function modalReducer(modalState, action) {
     switch(action.type) {
         case 'SHOW_MODAL':
             // set all to not showing
-            Object.keys(newModalState).forEach((modalName) => {
-                if (newModalState[modalName].display) {
+            Object.keys(newModalState.modals).forEach((modalName) => {
+                if (newModalState.modals[modalName].display) {
                     console.log('overriding modal:', modalName);
-                    newModalState[modalName].display = false;
+                    newModalState.modals[modalName].display = false;
                 }
             });
 
-            newModalState[action.payload.modalName] = {
+            newModalState.modals[action.payload.modalName] = {
                 display: true,
                 options: action.payload.options,
             }
             console.log('set', action.payload.modalName, 'to showing');
         break;
         case 'HIDE_MODAL':
-            newModalState[action.payload.modalName] = {
+            newModalState.modals[action.payload.modalName] = {
                 display: false,
                 options: action.payload.options,
             }
@@ -103,6 +114,40 @@ function modalReducer(modalState, action) {
     console.log('new modal state', newModalState);
     return newModalState;
 };
+function sessionsReducer(state, action) {
+    let newState = {
+        ...state,
+    };
+
+    switch (action.type) {
+        case 'VALIDATE_INVITE_BY_CODE': // check the invite code and retrieve session, check bans
+            console.log('[Action Received]', 'Initialized validation of session invite code.');
+            newState.session.status = 'connecting';
+            newState.modals.joinSession.display = false;
+            newState.modals.connecting.display = true;
+            break;
+        case 'VALIDATE_SESSION_PASSWORD': // check the session password
+            console.log('[Action Received]', 'Initialized session password validation.');
+            newState.session.status = 'checking password';
+            break;
+        case 'RETRIEVE_PLAYER_KEY': // api key for players
+            console.log('[Action Received]', 'Initialized player key retrieval.');
+            newState.session.status = 'retrieving key';
+            break;
+        case 'SET_INVITE_CODE':
+            console.log('[Action Received]', 'Set invite code.');
+            if (action.payload.inviteCode.length === 8) {
+                newState.session.id = action.payload.inviteCode;
+            } else {
+                console.error('Unable to set session id - not 8 characters.');
+            }
+            break;
+        default:
+            break;
+    }
+
+    return newState;
+}
 function rootReducer(state = initialState, action) {
     let newState = {
         ...state
@@ -112,12 +157,13 @@ function rootReducer(state = initialState, action) {
 
     // reducer context handler
     switch (action.reducer) {
-        case 'tools': newState = { ...newState, tools: toolsReducer(state.tools, action) }; break; // manages toolbar
+        case 'tools': newState = { ...newState, ...toolsReducer(state, action) }; break; // manages toolbar
+        case 'sessions': newState = { ...newState, ...sessionsReducer(state, action) }; break; // manages sessions
         case 'account': break; // manages account stuff like logging in
         case 'gamemaster': break; // manages gamemaster special tools (advanced tools)
         case 'invite': break; // manages creation and accepting of invites and tripcodes
         case 'canvas': break; // manages drawing on the canvas
-        case 'modals': newState = { ...newState, modals: modalReducer(state.modals, action) }; break; // manages showing and hiding of modals
+        case 'modals': newState = { ...newState, ...modalReducer(state, action) }; break; // manages showing and hiding of modals
         case 'toast': break; // manages showing and hiding of toasts
         case 'chat': break; // manages account stuff like logging in
         case 'roll': break; // manages rolling of dice on the secure rolling server

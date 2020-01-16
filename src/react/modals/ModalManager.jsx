@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import LoginModal from './login/LoginModal';
-import InviteModal from './invite/InviteModal';
+import InviteModal from './session/InviteModal';
 import GamemasterModal from './gamemaster/GamemasterModal';
-import JoinSessionModal from './join-session/JoinSessionModal';
+import JoinSessionModal from './session/JoinSessionModal';
+import CreateSessionModal from './session/CreateSessionModal';
+import ConnectingModal from './session/ConnectingModal';
 
 class ModalManager extends React.Component {
     render(props) {
@@ -13,6 +15,8 @@ class ModalManager extends React.Component {
                 <InviteModal />
                 <GamemasterModal />
                 <JoinSessionModal />
+                <CreateSessionModal />
+                <ConnectingModal />
             </>
         );
     }
